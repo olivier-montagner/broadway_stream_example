@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Stream with Broadway.js example</title>	
+</head>
+<body>
+	<script type="text/javascript" src="lib/Decoder.js"></script>
+	<script type="text/javascript" src="lib/YUVCanvas.js"></script>
+	<script type="text/javascript" src="lib/WebGLCanvas.js"></script>
+	<script type="text/javascript" src="lib/Player.js"></script>
+	<script type="text/javascript" src="lib/stream.js"></script> 
+	<script type="text/javascript" src="lib/mp4.js"></script>
+  
+	<script type="text/javascript">
+	
+		// Create broadway player
+		console.log("Creae broadway player");
+		var player = new Player({
+		  workers: false,
+		  render : true,
+		  webgl: "auto"
+		});
+
+		// Add player to the document
+		console.log("Add player to the document");
+		document.body.appendChild(player.canvas);
+
+		// Connecting to WebSocket
+		const socketURL = 'ws://localhost:8082';
+		console.log("Add player to the document");
+		window.onload = function() {
+			var ws = new WebSocket(socketURL);
+			ws.binaryType = 'arraybuffer';
+			ws.addEventListener('message',function(event) {
+				player.decode(new Uint8Array(event.data));
+			});
+
+			ws.addEventListener('error', function(e) {
+				console.log('Socket Error');
+			});
+		 }		  
+	</script>
+</body>
+</html>

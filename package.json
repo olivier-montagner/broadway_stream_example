@@ -1,0 +1,24 @@
+{
+  "name": "broadway_stream_example",
+  "version": "1.0.0",
+  "description": "Simple example to use Broadway.js with a video stream from ffmpeg",
+  "keywords": [
+    "h264",
+	"video stream"
+    "raw h264",
+    "player",
+    "html5",
+    "mp4",
+    "websocket",
+	"ffmpeg",
+	"broadway"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/olivier-montagner/broadway_stream_example.git"
+  },
+  "author": "Olivier Montagner",
+  "dependencies": {
+    "ws" : "^7.4.2"
+  }
+}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Stream with Broadway.js without WebSocket example</title>	
+	
+</head>
+<body>
+	<script type="text/javascript" src="lib/Decoder.js"></script>
+	<script type="text/javascript" src="lib/YUVCanvas.js"></script>
+	<script type="text/javascript" src="lib/WebGLCanvas.js"></script>
+	<script type="text/javascript" src="lib/Player.js"></script>
+	<script type="text/javascript" src="lib/stream.js"></script> 
+	<script type="text/javascript" src="lib/mp4.js"></script>
+	
+	<button type="button" onclick="play()">Start</button>
+	<button type="button" onclick="stop()">Pause</button>
+	<script type="text/javascript">
+
+//create broadway player
+console.log("create broadway player");
+var player = new Player({
+  workers: false,
+  render : true,
+  webgl: "auto"
+});
+
+//add player to the document
+console.log("add player to the document");
+document.body.appendChild(player.canvas);
+
+function sleep (time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
+ 
+function play(){
+	console.log("playing stream...");
+	pump=true;
+    getChunk();
+}
+
+function stop(){
+	console.log("stopping stream...");
+	pump=false;
+}
+
+var pump=false;
+var fhz=1000/30;
+function getChunk(){
+	sleep(fhz).then(() => {
+		console.log("fetching at "+ fhz + "Hz");
+		fetch("http://localhost:8080/video").then(function(response) {
+			//console.log("GET response : " + response);
+			return response.arrayBuffer();
+		})
+		.then(function(data) {
+			//console.log("ArrayBuffer");
+			player.decode(new Uint8Array(data));
+		});
+		
+		if(pump)
+			getChunk();
+	});
+}
+ 
+	</script>
+</body>
+</html>
