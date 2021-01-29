@@ -37,7 +37,7 @@ In your console:
 
 In your browser:
 
-`http://http://localhost:8080/view-broadway.html`
+`http://localhost:8080/view-broadway.html`
 
 In another console (for windows):
 
